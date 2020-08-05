@@ -3,7 +3,11 @@ import { Abi } from './abi';
 import { multicallAbi } from './abi/multicall';
 import { ContractCall } from './types';
 
-export async function all(calls: ContractCall[], multicallAddress: string, provider: ethers.providers.Provider) {
+export async function all<T extends any[] = any[]>(
+  calls: ContractCall[],
+  multicallAddress: string,
+  provider: ethers.providers.Provider,
+): Promise<T> {
   const multicall = new ethers.Contract(multicallAddress, multicallAbi, provider);
   const callRequests = calls.map(call => {
     const callData = Abi.encode(call.name, call.inputs, call.params);
@@ -14,7 +18,7 @@ export async function all(calls: ContractCall[], multicallAddress: string, provi
   });
   const response = await multicall.aggregate(callRequests);
   const callCount = calls.length;
-  const callResult = [];
+  const callResult = [] as T;
   for (let i = 0; i < callCount; i++) {
     const outputs = calls[i].outputs;
     const returnData = response.returnData[i];
