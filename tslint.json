@@ -1,0 +1,20 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "quotemark": [true, "single"],
+    "no-console": false,
+    "no-shadowed-variable": false,
+    "trailing-comma": false,
+    "align": false,
+    "curly": [true, "ignore-same-line"],
+    "no-namespace": false,
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "class-name": false,
+    "arrow-parens": false,
+    "array-type": false,
+    "interface-name": false,
+    "object-literal-sort-keys": false,
+    "variable-name": [true, "allow-leading-underscore"]
+  }
+}

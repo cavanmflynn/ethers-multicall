@@ -1,0 +1,3 @@
+describe('noop', () => {
+  // no tests :(
+});
