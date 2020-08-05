@@ -4,11 +4,11 @@ export class Abi {
   public static encode(name: string, inputs: ethers.utils.ParamType[], params: any[]) {
     const functionSignature = getFunctionSignature(name, inputs);
     const functionHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(functionSignature));
-    const functionData = functionHash.substring(0, 8);
+    const functionData = functionHash.substring(2, 10);
     const abiCoder = new ethers.utils.AbiCoder();
     const argumentString = abiCoder.encode(inputs, params);
     const argumentData = argumentString.substring(2);
-    const inputData = `${functionData}${argumentData}`;
+    const inputData = `0x${functionData}${argumentData}`;
     return inputData;
   }
 
