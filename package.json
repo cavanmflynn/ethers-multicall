@@ -8,7 +8,7 @@
     "test": "mocha -r @ts-tools/node \"test/**/*.test.ts\"",
     "build": "tsc",
     "lint": "tslint -c tslint.json '{src,test}/**/*.ts' --fix",
-    "prepublishOnly": "yarn test && yarn lint"
+    "prepublishOnly": "yarn build && yarn test && yarn lint"
   },
   "keywords": [
     "ethers",
