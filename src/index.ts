@@ -1,6 +1,6 @@
 import { Contract } from './contract';
-import { Provider } from './provider';
+import { Provider, setMulticallAddress } from './provider';
 import { ContractCall } from './types';
 
-export { Contract, Provider, ContractCall };
+export { Contract, Provider, ContractCall, setMulticallAddress };
 export default { Contract, Provider };
