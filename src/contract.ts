@@ -1,9 +1,10 @@
-import { JsonFragment } from '@ethersproject/abi';
+import { JsonFragment, Fragment, FunctionFragment } from '@ethersproject/abi';
+import { ethers } from 'ethers'
 
 export class Contract {
   private _address: string;
-  private _abi: JsonFragment[];
-  private _functions: JsonFragment[];
+  private _abi: Fragment[];
+  private _functions: FunctionFragment[];
 
   get address() {
     return this._address;
@@ -17,11 +18,12 @@ export class Contract {
     return this._functions;
   }
 
-  constructor(address: string, abi: JsonFragment[]) {
+  constructor(address: string, abi: JsonFragment[] | string[] | Fragment[]) {
     this._address = address;
-    this._abi = abi;
 
-    this._functions = abi.filter(x => x.type === 'function');
+    this._abi = toFragment(abi)
+
+    this._functions = this._abi.filter(x => x.type === 'function').map(x => FunctionFragment.from(x))
     const callFunctions = this._functions.filter(x => x.stateMutability === 'pure' || x.stateMutability === 'view');
 
     for (const callFunction of callFunctions) {
@@ -34,6 +36,14 @@ export class Contract {
   }
 
   [method: string]: any;
+}
+
+function toFragment(abi: JsonFragment[] | string[] | Fragment[]): Fragment[] {
+  let newAbi: Fragment[] = []
+  for (const i in abi) {
+    newAbi.push(ethers.utils.Fragment.from(abi[i]))
+  }
+  return newAbi
 }
 
 function makeCallFunction(contract: Contract, name: string) {
