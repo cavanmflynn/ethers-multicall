@@ -1,6 +1,6 @@
 {
   "name": "ethers-multicall",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Make multiple Ethereum network requests in a single HTTP query. ethcall for ethers v5.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
