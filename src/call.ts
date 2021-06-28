@@ -7,6 +7,7 @@ export async function all<T extends any[] = any[]>(
   calls: ContractCall[],
   multicallAddress: string,
   provider: ethers.providers.Provider,
+  blockTag?: number,
 ): Promise<T> {
   const multicall = new ethers.Contract(multicallAddress, multicallAbi, provider);
   const callRequests = calls.map(call => {
@@ -16,7 +17,9 @@ export async function all<T extends any[] = any[]>(
       callData,
     };
   });
-  const response = await multicall.aggregate(callRequests);
+  const response = await multicall.aggregate(callRequests, {
+    blockTag: blockTag,
+  });
   const callCount = calls.length;
   const callResult = [] as T;
   for (let i = 0; i < callCount; i++) {

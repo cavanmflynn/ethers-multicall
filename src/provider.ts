@@ -24,11 +24,11 @@ export class Provider {
     return getEthBalance(address, this._multicallAddress);
   }
 
-  public async all<T extends any[] = any[]>(calls: ContractCall[]) {
+  public async all<T extends any[] = any[]>(calls: ContractCall[], blockTag?: number) {
     if (!this._provider) {
       throw new Error('Provider should be initialized before use.');
     }
-    return all<T>(calls, this._multicallAddress, this._provider);
+    return all<T>(calls, this._multicallAddress, this._provider, blockTag);
   }
 }
 
