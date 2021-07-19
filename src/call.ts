@@ -1,4 +1,6 @@
-import { ethers } from 'ethers';
+import { Contract } from '@ethersproject/contracts';
+import type { Provider } from '@ethersproject/providers';
+
 import { Abi } from './abi';
 import { multicallAbi } from './abi/multicall';
 import { ContractCall } from './types';
@@ -6,10 +8,10 @@ import { ContractCall } from './types';
 export async function all<T extends any[] = any[]>(
   calls: ContractCall[],
   multicallAddress: string,
-  provider: ethers.providers.Provider,
+  provider: Provider,
 ): Promise<T> {
-  const multicall = new ethers.Contract(multicallAddress, multicallAbi, provider);
-  const callRequests = calls.map(call => {
+  const multicall = new Contract(multicallAddress, multicallAbi, provider);
+  const callRequests = calls.map((call) => {
     const callData = Abi.encode(call.name, call.inputs, call.params);
     return {
       target: call.contract.address,

@@ -1,11 +1,11 @@
-import { ethers } from 'ethers';
+import type { ParamType } from '@ethersproject/abi';
 
 export interface ContractCall {
   contract: {
     address: string;
   };
   name: string;
-  inputs: ethers.utils.ParamType[];
-  outputs: ethers.utils.ParamType[];
+  inputs: ParamType[];
+  outputs: ParamType[];
   params: any[];
 }
