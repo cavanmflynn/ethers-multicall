@@ -1,8 +1,8 @@
+import {InfuraProvider} from '@ethersproject/providers';
 import { assert } from 'chai';
-import { ethers } from 'ethers';
 import { Contract, Provider } from '../src';
 
-const provider = new ethers.providers.InfuraProvider('mainnet');
+const provider = new InfuraProvider('mainnet');
 const ethcallProvider = new Provider(provider, 1);
 
 it('human readable abi', async () => {
