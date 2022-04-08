@@ -1,5 +1,5 @@
-import {Contract} from '@ethersproject/contracts';
-import {Provider} from '@ethersproject/providers';
+import { Contract } from '@ethersproject/contracts';
+import { Provider } from '@ethersproject/providers';
 
 import { Abi } from './abi';
 import { multicallAbi } from './abi/multicall';

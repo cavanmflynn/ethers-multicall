@@ -1,4 +1,4 @@
-import {Provider as EthersProvider} from '@ethersproject/abstract-provider';
+import { Provider as EthersProvider } from '@ethersproject/abstract-provider';
 import { all } from './call';
 import { getEthBalance } from './calls';
 import { ContractCall } from './types';

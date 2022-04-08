@@ -1,7 +1,7 @@
-import {AbiCoder, ParamType} from '@ethersproject/abi';
-import {BytesLike} from '@ethersproject/bytes';
-import {keccak256} from '@ethersproject/keccak256';
-import {toUtf8Bytes} from '@ethersproject/strings';
+import { AbiCoder, ParamType } from '@ethersproject/abi';
+import { BytesLike } from '@ethersproject/bytes';
+import { keccak256 } from '@ethersproject/keccak256';
+import { toUtf8Bytes } from '@ethersproject/strings';
 
 export class Abi {
   public static encode(name: string, inputs: ParamType[], params: any[]) {
