@@ -1,13 +1,13 @@
-import { ethers } from 'ethers';
+import {Provider as EthersProvider} from '@ethersproject/abstract-provider';
 import { all } from './call';
 import { getEthBalance } from './calls';
 import { ContractCall } from './types';
 
 export class Provider {
-  private _provider: ethers.providers.Provider;
+  private _provider: EthersProvider;
   private _multicallAddress: string;
 
-  constructor(provider: ethers.providers.Provider, chainId?: number) {
+  constructor(provider: EthersProvider, chainId?: number) {
     this._provider = provider;
     this._multicallAddress = getAddressForChainId(chainId);
   }
@@ -59,7 +59,7 @@ function getAddressForChainId(chainId: number) {
   return multicallAddresses[chainId];
 }
 
-async function getAddress(provider: ethers.providers.Provider) {
+async function getAddress(provider: EthersProvider) {
   const { chainId } = await provider.getNetwork();
   return getAddressForChainId(chainId);
 }

@@ -1,5 +1,4 @@
 import { Fragment, FunctionFragment, JsonFragment } from '@ethersproject/abi';
-import { utils } from 'ethers';
 
 export class Contract {
   private _address: string;
@@ -39,7 +38,7 @@ export class Contract {
 }
 
 function toFragment(abi: JsonFragment[] | string[] | Fragment[]): Fragment[] {
-  return abi.map((item: JsonFragment | string | Fragment) => utils.Fragment.from(item));
+  return abi.map((item: JsonFragment | string | Fragment) => Fragment.from(item));
 }
 
 function makeCallFunction(contract: Contract, name: string) {
