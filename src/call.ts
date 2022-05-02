@@ -6,7 +6,7 @@ import { multicallAbi } from './abi/multicall';
 import { ContractCall } from './types';
 
 export async function all<T extends any[] = any[]>(
-  calls: ContractCall[],
+  calls: ContractCall<T>[],
   multicallAddress: string,
   provider: Provider,
 ): Promise<T> {

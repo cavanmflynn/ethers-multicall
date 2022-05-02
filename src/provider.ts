@@ -3,7 +3,31 @@ import { all } from './call';
 import { getEthBalance } from './calls';
 import { ContractCall } from './types';
 
+export interface MulticallProvider {
+  all<T1, T2>(calls: [ContractCall<T1>, ContractCall<T2>]): Promise<[T1, T2]>;
+  all<T1, T2, T3>(calls: [ContractCall<T1>, ContractCall<T2>, ContractCall<T3>]): Promise<[T1, T2, T3]>;
+  all<T1, T2, T3, T4>(calls: [
+    ContractCall<T1>,
+    ContractCall<T2>,
+    ContractCall<T3>,
+    ContractCall<T4>
+  ]): Promise<[T1, T2, T3, T4]>;
+  all<T1, T2, T3, T4, T5>(calls: [
+    ContractCall<T1>,
+    ContractCall<T2>,
+    ContractCall<T3>,
+    ContractCall<T4>,
+    ContractCall<T5>
+  ]): Promise<[T1, T2, T3, T4, T5]>;
+  all<T extends ContractCall<any>[] = ContractCall<any>[]>(calls: T): Promise<T[]>;
+}
+
 export class Provider {
+
+  public static create(provider: EthersProvider, chainId?: number) {
+    return new Provider(provider, chainId) as MulticallProvider;
+  }
+
   private _provider: EthersProvider;
   private _multicallAddress: string;
 
@@ -24,11 +48,11 @@ export class Provider {
     return getEthBalance(address, this._multicallAddress);
   }
 
-  public async all<T extends any[] = any[]>(calls: ContractCall[]) {
+  public async all<T extends ContractCall<any>[] = ContractCall<any>[]>(calls: T) {
     if (!this._provider) {
       throw new Error('Provider should be initialized before use.');
     }
-    return all<T>(calls, this._multicallAddress, this._provider);
+    return all(calls, this._multicallAddress, this._provider);
   }
 }
 

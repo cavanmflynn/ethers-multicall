@@ -1,6 +1,6 @@
 import { ParamType } from '@ethersproject/abi';
 
-export interface ContractCall {
+export interface ContractCall<T> {
   contract: {
     address: string;
   };
