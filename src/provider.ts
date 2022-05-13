@@ -19,7 +19,34 @@ export interface MulticallProvider {
     ContractCall<T4>,
     ContractCall<T5>
   ]): Promise<[T1, T2, T3, T4, T5]>;
-  all<T extends ContractCall<any>[] = ContractCall<any>[]>(calls: T): Promise<T[]>;
+  all<T1, T2, T3, T4, T5, T6>(calls: [
+    ContractCall<T1>,
+    ContractCall<T2>,
+    ContractCall<T3>,
+    ContractCall<T4>,
+    ContractCall<T5>,
+    ContractCall<T6>,
+  ]): Promise<[T1, T2, T3, T4, T5, T6]>;
+  all<T1, T2, T3, T4, T5, T6, T7>(calls: [
+    ContractCall<T1>,
+    ContractCall<T2>,
+    ContractCall<T3>,
+    ContractCall<T4>,
+    ContractCall<T5>,
+    ContractCall<T6>,
+    ContractCall<T7>,
+  ]): Promise<[T1, T2, T3, T4, T5, T6, T7]>;
+  all<T1, T2, T3, T4, T5, T6, T7, T8>(calls: [
+    ContractCall<T1>,
+    ContractCall<T2>,
+    ContractCall<T3>,
+    ContractCall<T4>,
+    ContractCall<T5>,
+    ContractCall<T6>,
+    ContractCall<T7>,
+    ContractCall<T8>,
+  ]): Promise<[T1, T2, T3, T4, T5, T6, T7, T8]>;
+  all<T extends ContractCall[] = ContractCall[]>(calls: T): Promise<T>;
 }
 
 export class Provider {

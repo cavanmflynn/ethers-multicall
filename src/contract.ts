@@ -1,9 +1,16 @@
 import { Fragment, FunctionFragment, JsonFragment } from '@ethersproject/abi';
+import {ContractCall} from './types';
+
+export interface MulticallMethods {
+  [method: string]: ReturnType<typeof makeCallFunction>;
+}
 
 export class Contract {
   private _address: string;
   private _abi: Fragment[];
   private _functions: FunctionFragment[];
+  private _methods: MulticallMethods;
+  [methods: string]: any;
 
   get address() {
     return this._address;
@@ -17,10 +24,14 @@ export class Contract {
     return this._functions;
   }
 
+  get methods() {
+    return this._methods;
+  }
+
   constructor(address: string, abi: JsonFragment[] | string[] | Fragment[]) {
     this._address = address;
-
     this._abi = toFragment(abi);
+    this._methods = {};
 
     this._functions = this._abi.filter(x => Boolean(x) && x.type === 'function').map(x => FunctionFragment.from(x));
     const callFunctions = this._functions.filter(x => x.stateMutability === 'pure' || x.stateMutability === 'view');
@@ -30,11 +41,10 @@ export class Contract {
       const getCall = makeCallFunction(this, name);
       if (!this[name]) {
         defineReadOnly(this, name, getCall);
+        defineReadOnly(this._methods, name, getCall);
       }
     }
   }
-
-  [method: string]: any;
 }
 
 function toFragment(abi: JsonFragment[] | string[] | Fragment[]): Fragment[] {
@@ -42,7 +52,7 @@ function toFragment(abi: JsonFragment[] | string[] | Fragment[]): Fragment[] {
 }
 
 function makeCallFunction(contract: Contract, name: string) {
-  return (...params: any[]) => {
+  return <T>(...params: any[]) => {
     const { address } = contract;
     const { inputs } = contract.functions.find(f => f.name === name);
     const { outputs } = contract.functions.find(f => f.name === name);
@@ -54,7 +64,7 @@ function makeCallFunction(contract: Contract, name: string) {
       inputs,
       outputs,
       params,
-    };
+    } as ContractCall<T>;
   };
 }
 
