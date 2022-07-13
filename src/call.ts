@@ -24,9 +24,13 @@ export async function all<T extends any[] = any[]>(
   for (let i = 0; i < callCount; i++) {
     const outputs = calls[i].outputs;
     const returnData = response.returnData[i];
-    const params = Abi.decode(outputs, returnData);
-    const result = outputs.length === 1 ? params[0] : params;
-    callResult.push(result);
+    try {
+      const params = Abi.decode(outputs, returnData);
+      const result = outputs.length === 1 ? params[0] : params;
+      callResult.push(result);
+    } catch (e) {
+      callResult.push(undefined);
+    }
   }
   return callResult;
 }
