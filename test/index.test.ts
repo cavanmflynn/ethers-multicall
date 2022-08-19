@@ -38,6 +38,10 @@ it('json abi', async () => {
         payable: false,
         stateMutability: 'view',
         type: 'function'
+    },
+    {
+      stateMutability: 'payable',
+      type: 'receive'
     }
   ];
   const addresses = [
