@@ -1,10 +1,10 @@
 import {InfuraProvider} from '@ethersproject/providers';
 import { assert } from 'chai';
 import {BigNumber} from 'ethers';
-import {Contract, ContractCall, Provider} from '../src';
+import {Contract, createMulticallProvider, MulticallProvider} from '../src';
 
 const provider = new InfuraProvider('mainnet');
-const ethcallProvider = Provider.create(provider, 1);
+const ethcallProvider = createMulticallProvider(provider, 1);
 
 it('human readable abi', async () => {
   const abi = [

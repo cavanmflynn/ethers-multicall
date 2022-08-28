@@ -3,7 +3,47 @@ import { all } from './call';
 import { getEthBalance } from './calls';
 import { ContractCall } from './types';
 
-export interface MulticallProvider {
+export type MulticallProvider = typeof Provider & Multicalls;
+
+export function createMulticallProvider(provider: EthersProvider, chainId?: number): MulticallProvider {
+  return Provider.create(provider, chainId);
+}
+
+class Provider implements Multicalls {
+
+  public static create(provider: EthersProvider, chainId?: number): MulticallProvider {
+    return new Provider(provider, chainId) as unknown as MulticallProvider;
+  }
+
+  private _provider: EthersProvider;
+  private _multicallAddress: string;
+
+  constructor(provider: EthersProvider, chainId?: number) {
+    this._provider = provider;
+    this._multicallAddress = getAddressForChainId(chainId);
+  }
+
+  public async init() {
+    // Only required if `chainId` was not provided in constructor
+    this._multicallAddress = await getAddress(this._provider);
+  }
+
+  public getEthBalance(address: string) {
+    if (!this._provider) {
+      throw new Error('Provider should be initialized before use.');
+    }
+    return getEthBalance(address, this._multicallAddress);
+  }
+
+  public async all<T extends ContractCall<any>[] = ContractCall<any>[]>(calls: T) {
+    if (!this._provider) {
+      throw new Error('Provider should be initialized before use.');
+    }
+    return all(calls, this._multicallAddress, this._provider);
+  }
+}
+
+export interface Multicalls {
   all<T1, T2>(calls: [ContractCall<T1>, ContractCall<T2>]): Promise<[T1, T2]>;
   all<T1, T2, T3>(calls: [ContractCall<T1>, ContractCall<T2>, ContractCall<T3>]): Promise<[T1, T2, T3]>;
   all<T1, T2, T3, T4>(calls: [
@@ -47,40 +87,6 @@ export interface MulticallProvider {
     ContractCall<T8>,
   ]): Promise<[T1, T2, T3, T4, T5, T6, T7, T8]>;
   all<T extends ContractCall[] = ContractCall[]>(calls: T): Promise<T>;
-}
-
-export class Provider {
-
-  public static create(provider: EthersProvider, chainId?: number) {
-    return new Provider(provider, chainId) as MulticallProvider;
-  }
-
-  private _provider: EthersProvider;
-  private _multicallAddress: string;
-
-  constructor(provider: EthersProvider, chainId?: number) {
-    this._provider = provider;
-    this._multicallAddress = getAddressForChainId(chainId);
-  }
-
-  public async init() {
-    // Only required if `chainId` was not provided in constructor
-    this._multicallAddress = await getAddress(this._provider);
-  }
-
-  public getEthBalance(address: string) {
-    if (!this._provider) {
-      throw new Error('Provider should be initialized before use.');
-    }
-    return getEthBalance(address, this._multicallAddress);
-  }
-
-  public async all<T extends ContractCall<any>[] = ContractCall<any>[]>(calls: T) {
-    if (!this._provider) {
-      throw new Error('Provider should be initialized before use.');
-    }
-    return all(calls, this._multicallAddress, this._provider);
-  }
 }
 
 const multicallAddresses = {
