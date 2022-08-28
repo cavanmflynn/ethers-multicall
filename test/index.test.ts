@@ -1,7 +1,7 @@
 import {InfuraProvider} from '@ethersproject/providers';
 import { assert } from 'chai';
 import {BigNumber} from 'ethers';
-import {Contract, createMulticallProvider, MulticallProvider} from '../src';
+import {Contract, createMulticallProvider} from '../src';
 
 const provider = new InfuraProvider('mainnet');
 const ethcallProvider = createMulticallProvider(provider, 1);
